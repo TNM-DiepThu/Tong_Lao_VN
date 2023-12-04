@@ -1,0 +1,68 @@
+﻿@model ASM_CS4.Models.Product
+
+@{
+    ViewData["Title"] = "Product Details";
+}
+
+<section class="ftco-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 mb-5 ftco-animate">
+                <a href="~/imgsp/@Model.UrlImage" class="image-popup prod-img-bg">
+                    <img src="~/imgsp/@Model.UrlImage" class="img-fluid" alt="@Model.Name">
+                </a>
+            </div>
+            <div class="col-lg-6 product-details pl-md-5 ftco-animate">
+                <h3>@Model.Name</h3>
+                <p class="price"><span>@Model.Price.ToString("C")</span></p>
+                <p>@Model.Description</p>
+                <div class="row mt-4">
+                    <div class="col-md-6">
+                        <div class="form-group d-flex">
+                            <div class="select-wrap">
+                                <div class="icon"><span class="ion-ios-arrow-down"></span></div>
+                                <input type="number" id="quantity" name="quantity" class="form-control input-number" value="1" min="1" max="100">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <a asp-controller="Cart" asp-action="AddToCart" id="addToCartButton" data-product-id="@Model.Id" class="btn btn-black py-3 px-5 mr-2">
+                    Add to Cart
+                </a>
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        document.getElementById('addToCartButton').addEventListener('click', function (event) {
+                            event.preventDefault(); 
+                            var productId = document.getElementById('addToCartButton').getAttribute('data-product-id');
+                            var quantity = document.getElementById('quantity').value;
+                            var form = document.createElement('form');
+                            form.setAttribute('method', 'post');
+                            form.setAttribute('action', '/Cart/AddToCart'); 
+
+                            var productIdField = document.createElement('input');
+                            productIdField.setAttribute('type', 'hidden');
+                            productIdField.setAttribute('name', 'productId');
+                            productIdField.setAttribute('value', productId);
+                            form.appendChild(productIdField);
+
+                            var quantityField = document.createElement('input');
+                            quantityField.setAttribute('type', 'hidden');
+                            quantityField.setAttribute('name', 'quantity');
+                            quantityField.setAttribute('value', quantity);
+                            form.appendChild(quantityField);
+                            document.body.appendChild(form);
+                            form.submit();
+                        });
+                    });
+                </script>
+
+                @if (TempData["CartMessage"] != null)
+                {
+                    <div class="mt-3">
+                        <span>@TempData["CartMessage"]</span>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,37 @@
+﻿@model IEnumerable<ASM_CS4.Models.Product>
+
+@{
+    ViewData["Title"] = "Chọn dép";
+}
+
+<h1> Danh sách sản phẩm </h1>
+
+
+<tbody>
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-3">
+                <div class="card" style="width: 18rem;">
+                    <img src="~/imgsp/@item.UrlImage" class="card-img-top" alt="..." width="100%" height="200px">
+                    <div class="card-body">
+                        <h5 class="card-title">@Html.DisplayFor(modelItem => item.Name)</h5>
+                        <p class="card-text">@Html.DisplayFor(modelItem => item.Price) .vnd</p>
+                        <p class="card-text">@Html.DisplayFor(modelItem => item.Description)</p>
+                        @if (Context.Session.GetString("UserId") == null)
+                        {
+                            
+                            <a asp-controller="Loggin" asp-action="login" class="btn btn-primary">Đăng nhập để mua hàng</a>
+                        }
+                        else
+                        {
+                           
+                            <a href="@Url.Action("Details", "Product", new { id = item.Id })" class="btn btn-primary">Chi tiết sản phẩm</a>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+</tbody>

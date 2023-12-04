@@ -1,0 +1,59 @@
+﻿@model List<Cart_Detail>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12 ftco-animate">
+            <div class="cart-list">
+                <table class="table">
+                    <thead class="thead-primary">
+                        <tr class="text-center">
+                            <th>&nbsp;</th>
+                            <th>Product</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr class="text-center">                              
+                                <td class="product-remove">
+                                    <a href="@Url.Action("DeleteCart", "Cart", new {id= item.Id })"><span class="ion-ios-close"></span></a>
+                                </td>
+                                <td class="image-prod">
+                                    <div class="img" style="background-image:url(@item.Product.UrlImage);"></div>
+                                </td>
+                                <td class="product-name">
+                                    <h3>@item.Product.Name</h3>
+                                    <p>@item.Product.Description</p>
+                                </td>
+                                <td class="price">$@item.Product.Price</td>
+                                <td class="quantity">
+                                    <div class="input-group mb-3">
+                                        <input type="text" name="quantity"
+                                               class="quantity form-control input-number" value="@item.soluong" min="1" max="100">
+                                    </div>
+                                </td>
+                                <td class="total">$@(item.Product.Price * item.soluong)</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-start">
+        <div class="col col-lg-5 col-md-6 mt-5 cart-wrap ftco-animate">
+            <div class="cart-total mb-3">
+                <h3>Cart Totals</h3>
+                
+            </div>
+            <p class="text-center">
+                <a href="checkout.html" class="btn btn-primary py-3 px-4">
+                    Proceed to Checkout
+                </a>
+            </p>
+        </div>
+    </div>
+</div>
