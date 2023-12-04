@@ -1,5 +1,6 @@
 ﻿using ASM_CS4.data;
 using ASM_CS4.Models;
+using ASM_CS4.Repository.IRepository;
 using ASM_CS4.ViewModal;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,12 +8,14 @@ namespace ASM_CS4.Controllers
 {
     public class Loggin : Controller
     {
+        private readonly IUserRepo _userRepo;
         private readonly IHttpContextAccessor _httpContextAccessor;
         MyDbContext _dbContext;
-        public Loggin(MyDbContext dbContext, IHttpContextAccessor httpContextAccessor)
+        public Loggin(MyDbContext dbContext, IHttpContextAccessor httpContextAccessor,IUserRepo userRepo)
         {
             _dbContext = dbContext;
             _httpContextAccessor = httpContextAccessor;
+            _userRepo = userRepo;
 
         }
         public IActionResult Index()
@@ -47,6 +50,21 @@ namespace ASM_CS4.Controllers
 
             return RedirectToAction("Index", "Home");
         }
-     
+
+        public IActionResult Create()
+        {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult Create(User p)
+        {
+            if (_userRepo.Create(p))
+            {
+                return RedirectToAction("Index","Home");
+            }
+            return View();
+        }
+
+
     }
 }
